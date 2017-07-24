@@ -1,2 +1,2 @@
 # CustomAuth
-Custom authentication with spring sequrity
+sample of custom authentication with spring sequrity
