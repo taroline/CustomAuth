@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8" />
+<title>メニュー</title>
+</head>
+<body>
+  <h1>Menu</h1>
+  <div sec:authorize="hasRole('ROLE_ADMIN')">
+    <a th:href="@{/admin}">管理ページ</a>
+  </div>
+  <form method="post" th:action="@{/logout}">
+    <input type="submit" value="サインアウト" />
+  </form>
+</body>
+</html>
