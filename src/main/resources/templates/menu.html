@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 <meta charset="UTF-8" />
 <title>メニュー</title>
@@ -9,8 +10,14 @@
   <div sec:authorize="hasRole('ROLE_ADMIN')">
     <a th:href="@{/admin}">管理ページ</a>
   </div>
-  <form method="post" th:action="@{/logout}">
-    <input type="submit" value="サインアウト" />
-  </form>
+  <div th:fragment="logout" sec:authorize="isAuthenticated()">
+    <p>
+      Login as: <span sec:authentication="name"></span> <span
+        sec:authentication="principal.authorities"></span>
+    </p>
+    <form action="#" th:action="@{/logout}" method="post">
+      <input type="submit" value="ログアウト" />
+    </form>
+  </div>
 </body>
 </html>
