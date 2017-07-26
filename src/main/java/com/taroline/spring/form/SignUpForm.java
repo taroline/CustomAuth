@@ -6,14 +6,14 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 
 public class SignUpForm {
-    @Pattern(regexp = "^\\w{3,32}$", message = "size must be between 3 and 32, each character must be alphanumeric or underscore (A-Za-z0-9_)")
+    @Pattern(regexp = "^\\w{3,32}$", message = "3-32文字の半角英数字で設定してください")
     private String username;
 
-    @Size(min = 8, max = 255)
+    @Size(min = 8, max = 255, message = "8-255文字で設定してください")
     private String password;
 
     @Email
-    @Size(min = 3, max = 255)
+    @Size(min = 3, max = 255, message = "3-255文字で設定してください")
     private String mailAddress;
 
     public String getUsername() {

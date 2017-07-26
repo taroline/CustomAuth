@@ -13,9 +13,9 @@ public class HomeController {
         return "menu";
     }
 
-    @GetMapping("/admin")
+    @GetMapping("/admin/menu")
     public String admin() {
-        return "admin";
+        return "admin/menu";
     }
 
     @GetMapping("/login")

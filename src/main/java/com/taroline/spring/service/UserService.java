@@ -36,6 +36,10 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    public Iterable<User> findAllUser() {
+        return repository.findAll();
+    }
+
     @Transactional
     public void registerAdmin(String username, String password, String mailAddress) {
         User user = new User(username, this.passwordEncoder.encode(password), mailAddress);

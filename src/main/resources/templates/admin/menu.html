@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout1">
+<head>
+<title>管理者メニュー</title>
+</head>
+<body>
+  <div layout:fragment="contents">
+    <h1 class="page_header">管理者メニュー</h1>
+    <a th:href="@{/admin/user-manager}">ユーザー管理</a>
+  </div>
+</body>
+</html>

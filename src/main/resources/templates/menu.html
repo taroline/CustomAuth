@@ -1,23 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout1">
 <head>
-<meta charset="UTF-8" />
 <title>メニュー</title>
 </head>
 <body>
-  <h1>Menu</h1>
-  <div sec:authorize="hasRole('ROLE_ADMIN')">
-    <a th:href="@{/admin}">管理ページ</a>
-  </div>
-  <div th:fragment="logout" sec:authorize="isAuthenticated()">
-    <p>
-      Login as: <span sec:authentication="name"></span> <span
-        sec:authentication="principal.authorities"></span>
-    </p>
-    <form action="#" th:action="@{/logout}" method="post">
-      <input type="submit" value="ログアウト" />
-    </form>
+  <div layout:fragment="contents">
+    <h1 class="page_header">Menu</h1>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+      <a th:href="@{/admin/menu}">管理ページ</a>
+    </div>
   </div>
 </body>
 </html>

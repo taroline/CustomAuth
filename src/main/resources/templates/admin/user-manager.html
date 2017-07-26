@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout1">
+<head>
+<title>ユーザー管理</title>
+</head>
+<body>
+  <div layout:fragment="contents">
+    <h1 class="page_header">ユーザー管理</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ユーザーID</th>
+          <th>ロール</th>
+          <th>メールアドレス</th>
+          <th>有効/無効</th>
+          <th>更新日時</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="user : ${users}">
+          <td th:text="${user.username}"></td>
+          <td><span th:each="authority : ${user.authorities}" th:inline="text">[[${authority}]]<br /></span></td>
+          <td th:text="${user.mailAddress}"></td>
+          <td th:text="${user.enabled} ? '有効' : '無効'"></td>
+          <td th:text="${user.createdAt}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
