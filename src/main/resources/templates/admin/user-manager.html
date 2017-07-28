@@ -9,6 +9,7 @@
     <table class="table">
       <thead>
         <tr>
+          <th>ID</th>
           <th>ユーザーID</th>
           <th>ロール</th>
           <th>メールアドレス</th>
@@ -18,8 +19,11 @@
       </thead>
       <tbody>
         <tr th:each="user : ${users}">
+          <td th:inline="text"><a th:href="@{/admin/user-manager-detail(id=[[${user.id}]])">[[${user.id}]]</a></td>
           <td th:text="${user.username}"></td>
-          <td><span th:each="authority : ${user.authorities}" th:inline="text">[[${authority}]]<br /></span></td>
+          <td>
+            <span th:each="authority : ${user.authorities}" th:inline="text">[[${authority}]]<br /></span>
+          </td>
           <td th:text="${user.mailAddress}"></td>
           <td th:text="${user.enabled} ? '有効' : '無効'"></td>
           <td th:text="${user.createdAt}"></td>
