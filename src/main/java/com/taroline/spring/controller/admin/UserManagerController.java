@@ -1,12 +1,20 @@
 package com.taroline.spring.controller.admin;
 
+import java.security.Principal;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.taroline.spring.common.CommonConstant.AdminFlag;
 import com.taroline.spring.common.CommonConstant.UserStatus;
 import com.taroline.spring.entity.User;
 import com.taroline.spring.form.UserForm;
@@ -26,7 +34,7 @@ public class UserManagerController {
     }
 
     @GetMapping("/admin/user-manager-detail")
-    public String userManagerDetail(Model model, @RequestParam("id") String id) {
+    public String userManagerDetail(Model model, @ModelAttribute UserForm userForm, @RequestParam("id") String id, Principal principal) {
         if(StringUtils.isEmpty(id)) {
             throw new RuntimeException("パラメータ: idは必須です");
         }
@@ -35,14 +43,40 @@ public class UserManagerController {
             throw new RuntimeException("指定されたユーザーが見つかりませんでした");
         }
 
-        UserForm userForm = new UserForm();
         userForm.setId(String.valueOf(user.getId()));
+        userForm.setUsername(user.getUsername());
         userForm.setMailAddress(user.getMailAddress());
         userForm.setPassword("");
         userForm.setEnabled(user.isEnabled() ? UserStatus.ENABLED.getValue() : UserStatus.DISABLED.getValue());
         userForm.setIsAdmin(user.isAdmin() ? "1" : "");
 
-        model.addAttribute("userForm", userForm);
+        Authentication authentication = (Authentication)principal;
+        User currentUser = (User)authentication.getPrincipal();
+
+        // デッドロック防止のため本人の場合はEnabled,Disabledと管理者フラグには触らせない。
+        model.addAttribute("isMe", id.equals(String.valueOf(currentUser.getId())));
+
         return "admin/user-manager-detail";
+    }
+
+    @PostMapping(value="/admin/user-manager-detail", params="action=save")
+    public String userManagerDetailSave(Model model, @ModelAttribute @Validated UserForm userForm, BindingResult bindingResult) {
+        User user = userService.findUserById(Long.valueOf(userForm.getId()));
+        if(user == null) {
+            throw new RuntimeException("指定されたユーザーが見つかりませんでした");
+        }
+
+        user.setUsername(userForm.getUsername());
+        user.setMailAddress(userForm.getMailAddress());
+        user.setEnabled(UserStatus.ENABLED.getValue().equals(userForm.getEnabled()));
+        user.setAdmin(AdminFlag.IS_ADMIN.getValue().equals(userForm.getIsAdmin()));
+        userService.updateUser(user);
+
+        return "redirect:/admin/user-manager";
+    }
+
+    @PostMapping(value="/admin/user-manager-detail", params="action=cancel")
+    public String userManagerDetailCancel() {
+        return "redirect:/admin/user-manager";
     }
 }

@@ -57,4 +57,9 @@ public class UserService implements UserDetailsService {
         repository.save(user);
     }
 
+    @Transactional
+    public User updateUser(User user) {
+        return repository.save(user);
+    }
+
 }

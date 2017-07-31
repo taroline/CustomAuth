@@ -25,4 +25,29 @@ public class CommonConstant {
             return this.statusCode;
         }
     }
+
+    /**
+     * 管理者フラグ
+     */
+    public enum AdminFlag {
+        /**
+         * 管理者
+         */
+        IS_ADMIN("1"),
+
+        /**
+         * 管理者以外
+         */
+        ISNOT_ADMIN("2");
+
+        private final String isAdmin;
+
+        private AdminFlag(final String isAdmin) {
+            this.isAdmin = isAdmin;
+        }
+
+        public String getValue() {
+            return this.isAdmin;
+        }
+    }
 }
