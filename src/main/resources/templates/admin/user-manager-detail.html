@@ -7,38 +7,40 @@
   <div layout:fragment="contents">
     <h1 class="page_header">ユーザー詳細</h1>
     <form action="#" th:action="@{/admin/user-manager-detail}" th:object="${userForm}">
-      <div class="form-group" class="control-label">
+      <div class="form-group">
         <label for="id">ID</label>
         <input type="text" name="id" id="id" class="form-control" />
       </div>
-      <div class="form-group" class="control-label">
+      <div class="form-group">
         <label for="username">ユーザーID</label>
         <input type="text" name="username" id="username" class="form-control" />
       </div>
-      <div class="form-group" class="control-label">
+      <div class="form-group">
         <label for="mailAddress">メールアドレス</label>
         <input type="text" name="mailAddress" id="mailAddress" class="form-control" />
       </div>
-      <div class="form-group" class="control-label">
+      <fieldset class="form-group">
         <p class="control-label">
           <b>ロール</b>
         </p>
-        <div class="radio-inline">
-          <label for="isAdmin">管理者</label>
-          <input type="checkbox" name="isAdmin" id="isAdmin" class="form-control" value="1" />
+        <div class="form-check">
+          <label class="form-check-label" for="isAdmin"> <input type="checkbox" class="form-check-input" name="isAdmin" id="isAdmin" value="1" />管理者
+          </label>
         </div>
-      </div>
-      <div class="form-group" class="control-label">
+      </fieldset>
+      <fieldset class="form-group">
         <p class="control-label">
           <b>有効/無効</b>
         </p>
-        <div class="radio-inline">
-          <label for="enabled1">有効</label>
-          <input type="radio" name="enabled" id="enabled1" class="form-control" value="1" />
-          <label for="enabled2">無効</label>
-          <input type="radio" name="enabled" id="enabled2" class="form-control" value="2" />
+        <div class="form-check">
+          <label class="form-check-label" for="enabled1"> <input type="radio" name="enabled" id="enabled1" class="form-check-input" value="1" />有効
+          </label>
         </div>
-      </div>
+        <div class="form-check">
+          <label class="form-check-label" for="enabled2"> <input type="radio" name="enabled" id="enabled2" class="form-check-input" value="2" />無効
+          </label>
+        </div>
+      </fieldset>
     </form>
   </div>
 </body>

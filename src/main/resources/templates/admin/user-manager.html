@@ -19,8 +19,10 @@
       </thead>
       <tbody>
         <tr th:each="user : ${users}">
-          <td th:inline="text"><a th:href="@{/admin/user-manager-detail(id=[[${user.id}]])">[[${user.id}]]</a></td>
-          <td th:text="${user.username}"></td>
+          <td th:text="${user.id}"></td>
+          <td>
+            <a th:href="@{/admin/user-manager-detail(id=${user.id})}" th:text="${user.username}"></a>
+          </td>
           <td>
             <span th:each="authority : ${user.authorities}" th:inline="text">[[${authority}]]<br /></span>
           </td>

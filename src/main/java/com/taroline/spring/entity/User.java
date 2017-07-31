@@ -28,7 +28,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements UserDetails {
 
     public enum Authority {
-        ROLE_USER, ROLE_ADMIN
+        /**
+         * 一般ロール
+         */
+        ROLE_USER,
+        /**
+         * 管理者ロール
+         */
+        ROLE_ADMIN
     };
 
     @Id
@@ -58,7 +65,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Set<Authority> authorities;
 
-    protected User() {}
+    protected User() {
+    }
 
     public User(String username, String password, String mailAddress) {
         this.username = username;
@@ -74,22 +82,10 @@ public class User implements UserDetails {
         this.createdAt = new Date();
     }
 
-    public boolean isAdmin() {
-        return this.authorities.contains(Authority.ROLE_ADMIN);
-    }
-
-    public void setAdmin(boolean isAdmin) {
-        if (isAdmin) {
-            this.authorities.add(Authority.ROLE_ADMIN);
-        } else {
-            this.authorities.remove(Authority.ROLE_ADMIN);
-        }
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for(Authority authority  : this.authorities) {
+        for (Authority authority : this.authorities) {
             authorities.add(new SimpleGrantedAuthority(authority.toString()));
         }
         return authorities;
@@ -98,6 +94,44 @@ public class User implements UserDetails {
     @Override
     public String getPassword() {
         return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.enabled;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.enabled;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.enabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    public boolean isAdmin() {
+        return this.authorities.contains(Authority.ROLE_ADMIN);
+    }
+
+    public void setAdmin(boolean isAdmin) {
+        if (isAdmin) {
+            this.authorities.add(Authority.ROLE_ADMIN);
+        }
+        else {
+            this.authorities.remove(Authority.ROLE_ADMIN);
+        }
     }
 
     public Long getId() {
@@ -142,31 +176,6 @@ public class User implements UserDetails {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return this.enabled;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return this.enabled;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return this.enabled;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.enabled;
     }
 
 }

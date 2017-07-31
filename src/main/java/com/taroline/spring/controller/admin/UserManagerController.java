@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.taroline.spring.CommonConstant.UserStatus;
+import com.taroline.spring.common.CommonConstant.UserStatus;
 import com.taroline.spring.entity.User;
 import com.taroline.spring.form.UserForm;
 import com.taroline.spring.service.UserService;
