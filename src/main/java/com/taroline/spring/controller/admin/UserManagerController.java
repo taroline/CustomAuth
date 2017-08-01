@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -143,5 +145,18 @@ public class UserManagerController {
     public String userManagerDetailCancel() {
         // 一覧へ
         return "redirect:/admin/user-manager";
+    }
+
+    /**
+     * 必須パラメータが足りない場合のエラーハンドラ
+     * @param model
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public String missingServletRequestParameterExceptionHandle(Model model, MissingServletRequestParameterException ex) {
+        model.addAttribute("status", "エラー");
+        model.addAttribute("error", "必須パラメータ " + ex.getParameterName() + " が指定されていません");
+        return "error";
     }
 }
