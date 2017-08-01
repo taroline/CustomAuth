@@ -9,17 +9,16 @@
     <table class="table">
       <thead>
         <tr>
-          <th>ID</th>
           <th>ユーザーID</th>
           <th>ロール</th>
           <th>メールアドレス</th>
           <th>有効/無効</th>
+          <th>作成日時</th>
           <th>更新日時</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="user : ${users}">
-          <td th:text="${user.id}"></td>
           <td>
             <a th:href="@{/admin/user-manager-detail(id=${user.id})}" th:text="${user.username}"></a>
           </td>
@@ -29,6 +28,7 @@
           <td th:text="${user.mailAddress}"></td>
           <td th:text="${user.enabled} ? '有効' : '無効'"></td>
           <td th:text="${user.createdAt}"></td>
+          <td th:text="${user.updatedAt}"></td>
         </tr>
       </tbody>
     </table>

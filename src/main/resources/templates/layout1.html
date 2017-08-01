@@ -12,11 +12,8 @@
   <div class="container">
     <div class="contents" layout:fragment="contents"></div>
     <div sec:authorize="isAuthenticated()">
-      <p>
-        <span sec:authentication="name" th:remove="tag"></span>でログイン中
-      </p>
       <form action="#" th:action="@{/logout}" method="post">
-        <input type="submit" class="btn btn-default" value="ログアウト" />
+        <span sec:authentication="name" th:remove="tag"></span>でログイン中 <input type="submit" class="btn btn-default" value="ログアウト" />
       </form>
     </div>
     <div class="page_footer">&copy;2017 your.domain.here</div>

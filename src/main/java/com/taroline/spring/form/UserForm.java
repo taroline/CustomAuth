@@ -16,10 +16,22 @@ public class UserForm {
 
     private String password;
 
+    private String confirmPassword;
+
     @AssertTrue(message = "パスワードは8-255文字で設定してください")
     public boolean isValidPassword() {
         if(this.password != null && this.password.length() > 0) {
             return (this.password.trim().length() >= 3 && this.password.trim().length() <= 255);
+        } else {
+            // 空は許可
+            return true;
+        }
+    }
+
+    @AssertTrue(message = "確認用のパスワードが一致しません")
+    public boolean isSamePassword() {
+        if(this.password != null && this.password.length() > 0) {
+            return (this.password.equals(this.confirmPassword));
         } else {
             // 空は許可
             return true;
@@ -81,6 +93,14 @@ public class UserForm {
 
     public void setIsAdmin(String isAdmin) {
         this.isAdmin = isAdmin;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
 }
