@@ -1,19 +1,32 @@
 package com.taroline.spring.form;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 public class UserForm {
     private String id;
 
+    @NotBlank
     @Pattern(regexp = "^\\w{3,32}$", message = "3-32文字の半角英数字で設定してください")
     private String username;
 
-    @Size(min = 8, max = 255, message = "8-255文字で設定してください")
     private String password;
 
+    @AssertTrue(message = "パスワードは8-255文字で設定してください")
+    public boolean isValidPassword() {
+        if(this.password != null && this.password.length() > 0) {
+            return (this.password.trim().length() >= 3 && this.password.trim().length() <= 255);
+        } else {
+            // 空は許可
+            return true;
+        }
+    }
+
+    @NotBlank
     @Email
     @Size(min = 3, max = 255, message = "3-255文字で設定してください")
     private String mailAddress;

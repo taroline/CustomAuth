@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout1">
+<head>
+<title>エラー</title>
+</head>
+<body>
+  <div layout:fragment="contents">
+    <h1 th:text="${status} + ' ' + ${error}">500 Internal Server Error</h1>
+    <p>システムエラーが発生しました。<br/>管理者にお問い合わせください</p>
+    <p>
+      <a th:href="@{/}">TOPへ</a>
+    </p>
+  </div>
+</body>
+</html>

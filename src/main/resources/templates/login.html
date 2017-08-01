@@ -7,6 +7,7 @@
   <div class="container" layout:fragment="contents">
     <h1 class="page_header">ログイン</h1>
     <div id="login">
+      <img th:src="@{/images/test.png}" />
       <form method="post" th:action="@{/login}">
         <div class="alert alert-danger" role="alert" th:if="${loginError}">
           <span>ユーザー名またはパスワードに誤りがあります</span>
@@ -26,7 +27,6 @@
       <p>
         <a href="/signup">ユーザー登録</a>
       </p>
-      <img th:src="@{/images/test.jpg}" />
     </div>
   </div>
 </body>

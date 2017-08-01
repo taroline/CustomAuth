@@ -21,11 +21,27 @@ public class AuthController {
     @Autowired
     UserService userService;
 
+    /**
+     * ユーザー登録画面
+     *
+     * @param signUpForm
+     * @param model
+     * @return
+     */
     @GetMapping("/signup")
     public String signup(@ModelAttribute SignUpForm signUpForm, Model model) {
         return "signup";
     }
 
+    /**
+     * ユーザー登録処理
+     *
+     * @param model
+     * @param signUpForm
+     * @param bindingResult
+     * @param request
+     * @return
+     */
     @PostMapping("/signup")
     public String signupPost(Model model, @ModelAttribute @Validated SignUpForm signUpForm, BindingResult bindingResult,
             HttpServletRequest request) {
@@ -35,14 +51,16 @@ public class AuthController {
 
         try {
             userService.registerUser(signUpForm.getUsername(), signUpForm.getPassword(), signUpForm.getMailAddress());
-        } catch (DataIntegrityViolationException e) {
+        }
+        catch (DataIntegrityViolationException e) {
             model.addAttribute("signupError", true);
             return "signup";
         }
 
         try {
             request.login(signUpForm.getUsername(), signUpForm.getPassword());
-        } catch (ServletException e) {
+        }
+        catch (ServletException e) {
             e.printStackTrace();
         }
 
