@@ -22,12 +22,16 @@ import com.taroline.spring.common.CommonConstant.UserStatus;
 import com.taroline.spring.entity.User;
 import com.taroline.spring.form.UserForm;
 import com.taroline.spring.service.UserService;
+import com.taroline.spring.sessionbean.UserManagerSessionBean;
 
 @Controller
 public class UserManagerController {
 
     @Autowired
-    UserService userService;
+    UserService            userService;
+
+    @Autowired
+    UserManagerSessionBean session;
 
     /**
      * ユーザー一覧画面
@@ -68,14 +72,21 @@ public class UserManagerController {
         userForm.setUsername(user.getUsername());
         userForm.setMailAddress(user.getMailAddress());
         userForm.setPassword("");
+
+        // 編集不可の項目は、バリデーション失敗時に
+        // 画面を再描画するために、sessionに退避しておく
+        session.setEnabled(user.isEnabled());
+        session.setAdmin(user.isAdmin());
+
         userForm.setEnabled(user.isEnabled() ? UserStatus.ENABLED.getValue() : UserStatus.DISABLED.getValue());
-        userForm.setIsAdmin(user.isAdmin() ? "1" : "");
+        userForm.setIsAdmin(user.isAdmin() ? AdminFlag.IS_ADMIN.getValue() : "");
 
         Authentication authentication = (Authentication) principal;
         User currentUser = (User) authentication.getPrincipal();
 
         // 本人の場合は管理者フラグと有効/無効には触らせない
-        model.addAttribute("isMe", id.equals(String.valueOf(currentUser.getId())));
+        session.setMe(id.equals(String.valueOf(currentUser.getId())));
+        model.addAttribute("isMe", session.isMe());
 
         return "admin/user-manager-detail";
     }
@@ -94,6 +105,9 @@ public class UserManagerController {
 
         // バリデーション
         if (bindingResult.hasErrors()) {
+            userForm.setIsAdmin(session.isAdmin() ? AdminFlag.IS_ADMIN.getValue() : "");
+            userForm.setEnabled(session.isEnabled() ? UserStatus.ENABLED.getValue() : UserStatus.DISABLED.getValue());
+            model.addAttribute("isMe", session.isMe());
             return "admin/user-manager-detail";
         }
 
@@ -149,6 +163,7 @@ public class UserManagerController {
 
     /**
      * 必須パラメータが足りない場合のエラーハンドラ
+     *
      * @param model
      * @param ex
      * @return

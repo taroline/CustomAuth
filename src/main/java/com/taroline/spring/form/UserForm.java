@@ -4,6 +4,7 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -20,20 +21,23 @@ public class UserForm {
 
     @AssertTrue(message = "パスワードは8-255文字で設定してください")
     public boolean isValidPassword() {
-        if(this.password != null && this.password.length() > 0) {
-            return (this.password.trim().length() >= 3 && this.password.trim().length() <= 255);
-        } else {
-            // 空は許可
+        if (StringUtils.isNotEmpty(this.password) || StringUtils.isNotEmpty(this.confirmPassword)) {
+            return (this.password.trim().length() >= 8 && this.password.trim().length() <= 255)
+                    && (this.confirmPassword.trim().length() >= 8 && this.confirmPassword.trim().length() <= 255);
+        }
+        // 空は許可
+        else {
             return true;
         }
     }
 
     @AssertTrue(message = "確認用のパスワードが一致しません")
     public boolean isSamePassword() {
-        if(this.password != null && this.password.length() > 0) {
+        if (StringUtils.isNotEmpty(this.password) || StringUtils.isNotEmpty(this.confirmPassword)) {
             return (this.password.equals(this.confirmPassword));
-        } else {
-            // 空は許可
+        }
+        // 空は許可
+        else {
             return true;
         }
     }
